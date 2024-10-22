@@ -30,31 +30,26 @@ sudo yum install pv
 
 ## Usage
 
-1. Clone this repository:
+1. Download the script:
    ```
-   git clone https://github.com/cantalupo555/stress-disk-benchmark.git
-   ```
-
-2. Navigate to the project directory:
-   ```
-   cd stress-disk-benchmark
+   wget https://raw.githubusercontent.com/cantalupo555/stress-disk-benchmark/refs/heads/master/stress-disk-benchmark.sh
    ```
 
-3. Make the script executable:
+2. Make the script executable:
    ```
    chmod +x stress-disk-benchmark.sh
    ```
 
-4. Run the script:
+3. Run the script:
    ```
    ./stress-disk-benchmark.sh
    ```
 
-5. Follow the prompts to specify the total size and individual file size for the benchmark.
+4. Follow the prompts to specify the total size and individual file size for the benchmark.
 
-6. The script will perform write tests, and then ask if you want to proceed with read tests.
+5. The script will perform write tests, and then ask if you want to proceed with read tests.
 
-7. After the tests are complete, you'll have the option to remove the test files.
+6. After the tests are complete, you'll have the option to remove the test files.
 
 ## Understanding the Results
 
