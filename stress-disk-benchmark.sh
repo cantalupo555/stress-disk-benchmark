@@ -91,6 +91,9 @@ select_disk() {
     echo "$selected_mount"
 }
 
+# Call the select_disk function to allow the user to choose a disk for testing
+select_disk
+
 # Function to perform write test
 write_test() {
     local size_mb=$1
