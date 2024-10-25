@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 # Debug function
 debug() {
-    echo "DEBUG: $1"
+    echo "DEBUG: $1" >&2  # Redirect debug to stderr
 }
 
 # Check if 'pv' is installed
@@ -26,12 +26,12 @@ gb_to_mb() {
 # Function to list and select a disk
 select_disk() {
     debug "Starting select_disk function"
-    echo -e "${YELLOW}Available Disks:${NC}"
-    echo "----------------------------------------"
+    echo -e "${YELLOW}Available Disks:${NC}" >&2
+    echo "----------------------------------------" >&2
 
     # Debug to check the output of df
     debug "Output of df:"
-    df -h | grep '^/dev/' | grep -v '^/dev/loop'
+    df -h | grep '^/dev/' | grep -v '^/dev/loop' >&2
 
     # Create an array to store disk information
     declare -a devices
@@ -52,18 +52,18 @@ select_disk() {
         usep=$(echo "$info" | awk '{print $5}')
         mount=$(echo "$info" | awk '{print $6}')
 
-        echo "$((i+1))) $device"
-        echo "   Size: $size"
-        echo "   Used: $used"
-        echo "   Available: $avail"
-        echo "   Use: $usep"
-        echo "   Mounted on: $mount"
-        echo "----------------------------------------"
+        echo "$((i+1))) $device" >&2
+        echo "   Size: $size" >&2
+        echo "   Used: $used" >&2
+        echo "   Available: $avail" >&2
+        echo "   Use: $usep" >&2
+        echo "   Mounted on: $mount" >&2
+        echo "----------------------------------------" >&2
     done
 
     # If no devices are found
     if [ ${#devices[@]} -eq 0 ]; then
-        echo -e "${RED}Error: No devices found${NC}"
+        echo -e "${RED}Error: No devices found${NC}" >&2
         debug "No devices found in df"
         exit 1
     fi
@@ -77,22 +77,19 @@ select_disk() {
 
             # Check write permissions
             if [ -w "$selected_mount" ]; then
-                echo -e "${GREEN}Selected disk: $selected_device ($selected_mount)${NC}"
-                echo "----------------------------------------"
+                echo -e "${GREEN}Selected disk: $selected_device ($selected_mount)${NC}" >&2
+                echo "----------------------------------------" >&2
+                echo "$selected_mount"  # Only mount point is returned
                 break
             else
-                echo -e "${RED}Error: No write permission on $selected_mount${NC}"
-                echo -e "${RED}Run the script with sudo or select another disk.${NC}"
+                echo -e "${RED}Error: No write permission on $selected_mount${NC}" >&2
+                echo -e "${RED}Run the script with sudo or select another disk.${NC}" >&2
             fi
         else
-            echo -e "${RED}Invalid selection. Please enter a number between 1 and ${#devices[@]}.${NC}"
+            echo -e "${RED}Invalid selection. Please enter a number between 1 and ${#devices[@]}.${NC}" >&2
         fi
     done
-    echo "$selected_mount"
 }
-
-# Call the select_disk function to allow the user to choose a disk for testing
-select_disk
 
 # Function to perform write test
 write_test() {
