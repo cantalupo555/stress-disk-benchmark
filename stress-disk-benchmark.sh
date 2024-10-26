@@ -102,9 +102,10 @@ write_test() {
 # Function to perform read test
 read_test() {
     local file=$1
-    local size=$(stat -f %z "$file")
+    local size=$(stat -c %s "$file")
+    local size_mb=$((size / 1024 / 1024))
     echo -e "${YELLOW}Reading file...${NC}"
-    dd if="$file" bs=1M 2>/dev/null | pv -s $size | dd of=/dev/null 2>/dev/null
+    dd if="$file" bs=1M 2>/dev/null | pv -s ${size_mb}M | dd of=/dev/null 2>/dev/null
 }
 
 # Main function
